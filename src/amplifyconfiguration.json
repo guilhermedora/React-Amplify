@@ -1,0 +1,30 @@
+{
+  "aws_project_region": "us-east-1",
+  "aws_appsync_graphqlEndpoint": "https://hfsszi5v35bmbkm3v7vaye24aa.appsync-api.us-east-1.amazonaws.com/graphql",
+  "aws_appsync_region": "us-east-1",
+  "aws_appsync_authenticationType": "API_KEY",
+  "aws_appsync_apiKey": "da2-xgoe2sc7ujdalf6vc65xrhhyqq",
+  "aws_cognito_identity_pool_id": "us-east-1:0645f720-30c4-4b83-9138-cd87b68d3689",
+  "aws_cognito_region": "us-east-1",
+  "aws_user_pools_id": "us-east-1_y0BOBhulc",
+  "aws_user_pools_web_client_id": "1v88d8jhg5rdqe69h5u69qjdh8",
+  "oauth": {},
+  "aws_cognito_username_attributes": [
+    "EMAIL"
+  ],
+  "aws_cognito_social_providers": [],
+  "aws_cognito_signup_attributes": [
+    "EMAIL"
+  ],
+  "aws_cognito_mfa_configuration": "OFF",
+  "aws_cognito_mfa_types": [
+    "SMS"
+  ],
+  "aws_cognito_password_protection_settings": {
+    "passwordPolicyMinLength": 8,
+    "passwordPolicyCharacters": []
+  },
+  "aws_cognito_verification_mechanisms": [
+    "EMAIL"
+  ]
+}
