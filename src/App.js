@@ -7,6 +7,7 @@ import amplifyconfig from './amplifyconfiguration.json';
 import { withAuthenticator, Button, Heading } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 import { getCurrentUser, signOut } from 'aws-amplify/auth';
+import { uploadData } from 'aws-amplify/storage';
 
 const initialState = { name: '', path: '', owner: '' };
 const client = generateClient();
@@ -17,11 +18,34 @@ const App = () => {
   const [formState, setFormState] = useState(initialState);
   const [images, setImages] = useState([]);
   const [userName, setUserName] = useState('')
+  const [selectedFile, setSelectedFile] = useState(null);
 
   useEffect(() => {
     currentUser();
     fetchImages();
   }, []);
+
+  async function uploadTest() {
+    try {
+      const result = await uploadData({
+        key: 'teste',
+        data: selectedFile,
+        options: {
+          accessLevel: 'guest', // defaults to `guest` but can be 'private' | 'protected' | 'guest'
+          // onProgress // Optional progress callback.
+        }
+      }).result;
+      console.log('Succeeded: ', result);
+    } catch (error) {
+      console.log('Error : ', error);
+    }
+  }
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    setSelectedFile(file);
+    // onFileSelect(file);
+  };
 
   async function currentUser() {
     const { signInDetails } = await getCurrentUser()
@@ -91,13 +115,33 @@ const App = () => {
       <button style={styles.button} onClick={() => addImage()}>
         Create Image
       </button>
-      {images.map((image, index) => (
+      {/* {images.map((image, index) => (
         <div key={image.id ? image.id : index} style={styles.image}>
           <p style={styles.imageName}>{image.name}</p>
           <p style={styles.imagePath}>{image.path}</p>
           <p style={styles.imageOwner}>{image.owner}</p>
         </div>
-      ))}
+      ))} */}
+      <div
+        style={{
+          alignSelf: 'center',
+          width: '50%'
+        }}
+      >
+        <input
+          type="file"
+          style={styles.input}
+          onChange={handleFileChange}
+        />
+        {selectedFile &&
+          <>
+            <p style={{ textAlign: 'center' }}>Arquivo selecionado: {selectedFile.name}</p>
+            <button style={styles.button} onClick={() => uploadTest()}>
+              Create Image
+            </button>
+          </>
+        }
+      </div>
     </div>
   );
 };

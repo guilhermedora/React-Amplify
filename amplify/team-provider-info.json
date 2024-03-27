@@ -17,6 +17,9 @@
       },
       "auth": {
         "reactamplifydb9585d8": {}
+      },
+      "storage": {
+        "rastorage": {}
       }
     }
   }
