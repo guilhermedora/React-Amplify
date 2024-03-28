@@ -18,7 +18,9 @@ const App = () => {
   const [formState, setFormState] = useState(initialState);
   const [images, setImages] = useState([]);
   const [userName, setUserName] = useState('')
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState(null);
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     currentUser();
@@ -28,9 +30,10 @@ const App = () => {
   async function uploadTest() {
     try {
       const result = await uploadData({
-        key: 'teste',
-        data: selectedFile,
+        key: 'baixados.png',
+        data: selectedImage,
         options: {
+          contentType: 'image/*',
           accessLevel: 'guest', // defaults to `guest` but can be 'private' | 'protected' | 'guest'
           // onProgress // Optional progress callback.
         }
@@ -41,10 +44,24 @@ const App = () => {
     }
   }
 
-  const handleFileChange = (event) => {
+  const handleImageChange = (event) => {
     const file = event.target.files[0];
-    setSelectedFile(file);
-    // onFileSelect(file);
+    if (file && (file.type === 'image/jpeg' || file.type === 'image/png')) {
+      setSelectedImage(file);
+      const reader = new FileReader();
+      reader.onload = () => {
+        setPreviewUrl(reader.result);
+        console.log(reader.result);
+      };
+      reader.readAsDataURL(file);
+      setErrorMessage('');
+      // onImageSelect(file);
+    } else {
+      setSelectedImage(null);
+      setPreviewUrl(null);
+      setErrorMessage('Por favor, selecione uma imagem JPEG ou PNG.');
+      // onImageSelect(null);
+    }
   };
 
   async function currentUser() {
@@ -122,25 +139,37 @@ const App = () => {
           <p style={styles.imageOwner}>{image.owner}</p>
         </div>
       ))} */}
-      <div
-        style={{
-          alignSelf: 'center',
-          width: '50%'
-        }}
-      >
-        <input
-          type="file"
-          style={styles.input}
-          onChange={handleFileChange}
-        />
-        {selectedFile &&
-          <>
-            <p style={{ textAlign: 'center' }}>Arquivo selecionado: {selectedFile.name}</p>
-            <button style={styles.button} onClick={() => uploadTest()}>
-              Create Image
-            </button>
-          </>
-        }
+
+      <div>
+        {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            flexDirection: 'column',
+            gap: 10
+          }}
+        >
+          <input
+            type="file"
+            accept="image/jpeg, image/png"
+            onChange={handleImageChange}
+            style={{ ...styles.input, width: '50%' }}
+          />
+          {selectedImage && (
+            <>
+              <p>Imagem selecionada: {selectedImage.name}</p>
+              <img
+                src={previewUrl}
+                alt="Preview"
+                style={{ maxWidth: '100%', maxHeight: '200px' }}
+              />
+              <button style={styles.button} onClick={() => uploadTest()}>
+                Create Image
+              </button>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -148,6 +177,7 @@ const App = () => {
 
 const styles = {
   container: {
+    paddingBottom: '20px',
     width: '100%',
     margin: '0 auto',
     display: 'flex',
