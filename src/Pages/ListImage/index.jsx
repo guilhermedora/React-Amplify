@@ -88,7 +88,7 @@ export default function ListImage() {
                         <MyIcon
                             type='delete'
                             position={'absolute'}
-                            right={.1}
+                            right={15}
                             onClick={() => delImgFromGraphicL(image.id)}
                         />
                         <img src={image.url} alt="Imagem do Card" style={styles.cardImage} />
@@ -160,17 +160,19 @@ const styles = {
     },
     card: {
         borderRadius: '8px',
-        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+        boxShadow: '0px 0px 4px 8px #EE432B',
         overflow: 'hidden',
         // background: 'white',
+        padding: '15px',
         width: '300px',
         height: '300px',
         margin: '20px',
         position: 'relative'
     },
     cardImage: {
-        width: '30%',
-        height: '30%',
+        width: '50%',
+        height: '50%',
+        borderRadius: '10%'
         // objectFit: 'cover'
     },
     cardContent: {
