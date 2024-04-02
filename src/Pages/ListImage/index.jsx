@@ -1,11 +1,12 @@
 import '@aws-amplify/ui-react/styles.css';
-import { useState, useEffect } from 'react';
+import { generateClient } from "aws-amplify/api";
+import { downloadData, getUrl } from 'aws-amplify/storage';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../App.css';
+import { deleteImage } from '../../graphql/mutations';
 import { listImages } from '../../graphql/queries';
 import { MyIcon } from '../../ui-components';
-import { generateClient } from "aws-amplify/api";
-import { getUrl, downloadData } from 'aws-amplify/storage';
 
 const client = generateClient();
 
