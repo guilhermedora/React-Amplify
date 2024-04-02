@@ -27,6 +27,13 @@
   "aws_cognito_verification_mechanisms": [
     "EMAIL"
   ],
+  "aws_dynamodb_all_tables_region": "us-east-1",
+  "aws_dynamodb_table_schemas": [
+    {
+      "tableName": "Image-7hxh4h7knzcsfarm6srznkcnl4-dev",
+      "region": "us-east-1"
+    }
+  ],
   "aws_user_files_s3_bucket": "rastorage144621-dev",
   "aws_user_files_s3_bucket_region": "us-east-1"
 }

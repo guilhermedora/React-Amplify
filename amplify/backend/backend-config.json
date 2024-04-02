@@ -4,10 +4,15 @@
       "dependsOn": [],
       "output": {
         "authConfig": {
-          "additionalAuthenticationProviders": [],
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "AWS_IAM"
+            }
+          ],
           "defaultAuthentication": {
             "apiKeyConfig": {
-              "apiKeyExpirationDays": 7
+              "apiKeyExpirationDays": 30,
+              "description": "api key description"
             },
             "authenticationType": "API_KEY"
           }
@@ -45,7 +50,63 @@
       "service": "Cognito"
     }
   },
+  "parameters": {
+    "AMPLIFY_storage_Image7hxh4h7knzcsfarm6srznkcnl4dev_arn": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "Image7hxh4h7knzcsfarm6srznkcnl4dev"
+        }
+      ]
+    },
+    "AMPLIFY_storage_Image7hxh4h7knzcsfarm6srznkcnl4dev_partitionKeyName": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "Image7hxh4h7knzcsfarm6srznkcnl4dev"
+        }
+      ]
+    },
+    "AMPLIFY_storage_Image7hxh4h7knzcsfarm6srznkcnl4dev_partitionKeyType": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "Image7hxh4h7knzcsfarm6srznkcnl4dev"
+        }
+      ]
+    },
+    "AMPLIFY_storage_Image7hxh4h7knzcsfarm6srznkcnl4dev_region": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "Image7hxh4h7knzcsfarm6srznkcnl4dev"
+        }
+      ]
+    },
+    "AMPLIFY_storage_Image7hxh4h7knzcsfarm6srznkcnl4dev_streamArn": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "Image7hxh4h7knzcsfarm6srznkcnl4dev"
+        }
+      ]
+    },
+    "AMPLIFY_storage_Image7hxh4h7knzcsfarm6srznkcnl4dev_tableName": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "Image7hxh4h7knzcsfarm6srznkcnl4dev"
+        }
+      ]
+    }
+  },
   "storage": {
+    "Image7hxh4h7knzcsfarm6srznkcnl4dev": {
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB",
+      "serviceType": "imported"
+    },
     "rastorage": {
       "dependsOn": [],
       "providerPlugin": "awscloudformation",

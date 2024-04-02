@@ -19,7 +19,15 @@
         "reactamplifydb9585d8": {}
       },
       "storage": {
-        "rastorage": {}
+        "rastorage": {},
+        "Image7hxh4h7knzcsfarm6srznkcnl4dev": {
+          "tableName": "Image-7hxh4h7knzcsfarm6srznkcnl4-dev",
+          "region": "us-east-1",
+          "arn": "arn:aws:dynamodb:us-east-1:489368661063:table/Image-7hxh4h7knzcsfarm6srznkcnl4-dev",
+          "streamArn": "arn:aws:dynamodb:us-east-1:489368661063:table/Image-7hxh4h7knzcsfarm6srznkcnl4-dev/stream/2024-03-26T18:02:04.229",
+          "partitionKeyName": "id",
+          "partitionKeyType": "S"
+        }
       }
     }
   }

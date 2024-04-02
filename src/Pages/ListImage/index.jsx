@@ -1,25 +1,25 @@
 import '@aws-amplify/ui-react/styles.css';
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../../App.css';
 import { listImages } from '../../graphql/queries';
-import {
-    MyIcon
-} from '../../ui-components';
+import { MyIcon } from '../../ui-components';
 import { generateClient } from "aws-amplify/api";
-import { getUrl } from 'aws-amplify/storage';
-import { deleteImage } from '../../graphql/mutations';
+import { getUrl, downloadData } from 'aws-amplify/storage';
 
 const client = generateClient();
 
 export default function ListImage() {
+    const navigate = useNavigate();
     const [images, setImages] = useState([]);
-    const [fullImageData, setFullImageData] = useState([])
-    const [toggleRefresh, setToggleRefresh] = useState(false)
+    const [fullImageData, setFullImageData] = useState([]);
+    const [toggleRefresh, setToggleRefresh] = useState(false);
 
     useEffect(() => {
         setFullImageData([])
-        fetchImages();
-    }, [toggleRefresh]);
+        handleListImages()
+        // eslint-disable-next-line
+    }, [toggleRefresh])
 
     useEffect(() => {
         if (fullImageData.length > 0) return
@@ -27,56 +27,68 @@ export default function ListImage() {
         // eslint-disable-next-line
     }, [images])
 
-    async function updtImgDataWithUrl() {
-        const objectsWithUrl = await addUrlToObjects(images, teste2);
+    async function updtImgDataWithUrl() {//Atualiza a informação das imagens com os seus URL's
+        const objectsWithUrl = await addUrlToObjects(images, handleImageUrl);
         setFullImageData(objectsWithUrl)
     }
 
-    async function addUrlToObjects(array, fetchFunction) {
-        const newArray = await Promise.all(array.map(async obj => {
-            try {
-                const url = await fetchFunction(obj.path);
-                return { ...obj, url };
-            } catch (error) {
-                console.error('Erro ao processar objeto:', obj, error);
-                return obj;
-            }
-        }));
-
-        return newArray;
-    }
-
-    async function fetchImages() {
+    async function handleListImages() {//Baixa a lista de imagens disponíveis
         try {
             const imageData = await client.graphql({
                 query: listImages
-            });
-            let images = imageData.data.listImages.items;
-            setImages(images);
+            })
+            let images = imageData.data.listImages.items
+            setImages(images)
         } catch (err) {
-            console.log('error fetching images');
+            console.log('error fetching images')
         }
     }
 
-    async function teste2(imgName) {
+    async function addUrlToObjects(array, handleImageUrl) {//Concatena as URL da S3 com as informações das imagens
+        const newArray = await Promise.all(array.map(async obj => {
+            try {
+                const url = await handleImageUrl(obj.path)
+                return { ...obj, url }
+            } catch (error) {
+                console.error('Erro ao processar objeto:', obj, error)
+                return obj
+            }
+        }))
+
+        return newArray
+    }
+
+    async function handleImageUrl(imgName) {//Baixa URL do TIFF no bucket S3
         try {
             const result = await getUrl({
                 key: imgName,
                 options: { level: 'guest' }
-            });
+            })
             return result.url.href
         } catch (error) {
-            console.log('Error ', error);
+            console.log('Error ', error)
         }
     }
 
-    async function delImgFromGraphicL(Id) {
+    async function delImgFromGraphicL(Id) {//Deleta registro da imagem no banco
         await client.graphql({
             query: deleteImage,
             authMode: 'apiKey',
             variables: { input: { id: Id } }
-        });
+        })
         setToggleRefresh(!toggleRefresh)
+    }
+
+    async function loadingPreview(name) {//Baixa o file respectivo em blob e envia para página "/preview"
+        try {
+            const downloadResult = await downloadData({ key: name }).result;
+            const blob = await downloadResult.body.blob();
+            navigate('/preview', {
+                state: { imageData: blob }
+            })
+        } catch (error) {
+            console.log('Error : ', error)
+        }
     }
 
     return (
@@ -88,14 +100,26 @@ export default function ListImage() {
                         <MyIcon
                             type='delete'
                             position={'absolute'}
-                            right={15}
+                            top={10}
+                            right={10}
                             onClick={() => delImgFromGraphicL(image.id)}
                         />
-                        <img src={image.url} alt="Imagem do Card" style={styles.cardImage} />
+                        <MyIcon
+                            type='preview'
+                            position={'absolute'}
+                            right={55}
+                            top={10}
+                            onClick={() => loadingPreview(image.path)}
+                        />
+                        {/* <img
+                            src={image.url}
+                            alt="Imagem do Card"
+                            style={styles.cardImage}
+                        /> */}
                         <div style={styles.cardContent}>
-                            <h2 style={styles.cardTitle}>{image.name}</h2>
-                            <p style={styles.cardDescription}>{image.path}</p>
-                            <p style={styles.cardAdditionalInfo}>{image.owner}</p>
+                            <h2 style={styles.cardTitle}>{`${image.name}`}</h2>
+                            <p style={styles.cardDescription}>{`Arquivo ${image.path}`}</p>
+                            <p style={styles.cardAdditionalInfo}>{`Criado por ${image.owner}`}</p>
                         </div>
                     </div>
                 ))}
@@ -159,6 +183,9 @@ const styles = {
         alignSelf: 'center',
     },
     card: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
         borderRadius: '8px',
         boxShadow: '0px 0px 4px 8px #EE432B',
         overflow: 'hidden',
@@ -176,18 +203,22 @@ const styles = {
         // objectFit: 'cover'
     },
     cardContent: {
-        padding: '20px'
+        // padding: '20px',
+        // justifyContent: 'center'
     },
     cardTitle: {
         fontSize: '1.5rem',
-        marginBottom: '10px'
+        marginBottom: '10px',
+        width: '100%'
     },
     cardDescription: {
         fontSize: '1rem',
-        marginBottom: '10px'
+        marginBottom: '10px',
+        width: '100%'
     },
     cardAdditionalInfo: {
         fontSize: '0.9rem',
-        color: '#666666'
+        color: '#666666',
+        width: '100%'
     }
 };
