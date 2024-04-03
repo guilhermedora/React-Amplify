@@ -116,13 +116,14 @@ export default function UploadImage() {
             </div>
             {fileTest
                 ? <>
-                    <p>{`Arquivo ${fileTest.name} pronto para upload.`}</p>
+                    <p style={{ fontSize: '20px' }}>{`Arquivo ${fileTest.name} pronto para upload.`}</p>
                     <button
                         onClick={() => transferImage()}
                         style={{
                             backgroundColor: '#EE432B',
                             marginTop: '10px',
-                            marginBottom: '5px'
+                            marginBottom: '5px',
+                            fontSize: '20px'
                         }}
                     >
                         Salvar

@@ -1,7 +1,7 @@
 import {
     Button,
     IconButton,
-} from '@material-ui/core';
+} from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import anime from 'animejs';
 import React, { useEffect, useRef, useState } from 'react';
@@ -13,16 +13,7 @@ import amplifyconfig from '../../amplifyconfiguration.json';
 
 Amplify.configure(amplifyconfig)
 
-// import { ToastContainer, toast } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
-// import { CryptContext } from '../../Contexts/CryptContext';
-// import { ReqContext } from '../../Contexts/ReqContext';
-// import { UserContext } from '../../Contexts/UserContext';
-
 const Login = () => {
-    // const { handleStartServer, handleUserLogin } = useContext(ReqContext);
-    // const { encryptString } = useContext(CryptContext);
-    // const { setAlertInfo, alertInfo } = useContext(UserContext);
     const navigate = useNavigate();
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
@@ -31,22 +22,9 @@ const Login = () => {
     const current = useRef(null);
 
     useEffect(() => {
-        //     handleStartServer()
-        //     setInterval(() => {
-        //         handleStartServer()
-        //     }, 60000)
         handleArtSignin()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
-
-    // useEffect(() => {
-    //     localStorage.clear()
-    //     if (alertInfo.state) {
-    //         toast.error(`${alertInfo.text}`)
-    //         setAlertInfo({ state: false, text: '' })
-    //     }
-    //     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [alertInfo])
 
     const handleArtSignin = () => {
         function handleFocus(offset, arrayValue) {
@@ -82,9 +60,7 @@ const Login = () => {
 
     async function handleSubmit(e) {
         //Função de resquisição do login do usuário
-        // e.preventDefault()
         if (!login || !password) return
-        // console.log(login, password);
         try {
             await signIn({ username: login, password });
             navigate('/home')
@@ -106,26 +82,12 @@ const Login = () => {
 
     return (
         <div className="page">
-            {/* <ToastContainer
-                toastStyle={{
-                    color: 'whitesmoke',
-                    textAlign: 'center',
-                    fontSize: '4rem',
-                    marginTop: '2rem',
-                    fontWeight: 'bold'
-                }}
-                position='top-center'
-                theme='dark'
-                closeButton={false}
-            /> */}
+
             <div className="container">
                 <div className="left">
                     <div className="login">
                         Welcome to AWS Amplify Flow
                     </div>
-                    {/* <div className="eula">
-                        Welcome to AWS Amplify flow ;D
-                    </div> */}
                     <div className="eula">
                         studing and developed by Gui
                     </div>
