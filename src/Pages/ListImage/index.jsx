@@ -1,4 +1,3 @@
-import '@aws-amplify/ui-react/styles.css';
 import { generateClient } from "aws-amplify/api";
 import { downloadData, getUrl } from 'aws-amplify/storage';
 import { useEffect, useState } from 'react';
@@ -94,7 +93,7 @@ export default function ListImage() {
 
     return (
         <div style={styles.container}>
-            <h2>Lista de imagens</h2>
+            <h1 style={{ fontSize: '30px' }}>Raster List</h1>
             <div style={styles.image}>
                 {fullImageData?.map((image, index) => (
                     <div key={index} style={styles.card}>
@@ -208,17 +207,17 @@ const styles = {
         // justifyContent: 'center'
     },
     cardTitle: {
-        fontSize: '1.5rem',
+        fontSize: '2rem',
         marginBottom: '10px',
         width: '100%'
     },
     cardDescription: {
-        fontSize: '1rem',
+        fontSize: '1.5rem',
         marginBottom: '10px',
         width: '100%'
     },
     cardAdditionalInfo: {
-        fontSize: '0.9rem',
+        fontSize: '1rem',
         color: '#666666',
         width: '100%'
     }
