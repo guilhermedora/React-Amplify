@@ -6,6 +6,7 @@ import '../../App.css';
 import { deleteImage } from '../../graphql/mutations';
 import { listImages } from '../../graphql/queries';
 import { MyIcon } from '../../ui-components';
+import { AnimatePresence, motion } from 'framer-motion';
 
 const client = generateClient();
 
@@ -95,34 +96,53 @@ export default function ListImage() {
         <div style={styles.container}>
             <h1 style={{ fontSize: '30px' }}>Raster List</h1>
             <div style={styles.image}>
-                {fullImageData?.map((image, index) => (
-                    <div key={index} style={styles.card}>
-                        <MyIcon
-                            type='delete'
-                            position={'absolute'}
-                            top={10}
-                            right={10}
-                            onClick={() => delImgFromGraphicL(image.id)}
-                        />
-                        <MyIcon
-                            type='preview'
-                            position={'absolute'}
-                            right={55}
-                            top={10}
-                            onClick={() => loadingPreview(image.path)}
-                        />
-                        {/* <img
+                <AnimatePresence>
+                    {fullImageData?.map((image, index) => (
+                        <motion.div
+                            key={index}
+                            style={styles.card}
+                            initial={{ opacity: 0, scale: 0 }}
+                            animate={{ opacity: 1, scale: 1.01 }}
+                            transition={{
+                                duration: 1,
+                                delay: index / 2,
+                                ease: [0, 0.91, 0.2, 1.01],
+                                scale: {
+                                    type: "spring",
+                                    damping: 10,
+                                    stiffness: 100,
+                                    restDelta: 0.001
+                                }
+                            }}
+                            exit={{ opacity: 0 }}
+                        >
+                            <MyIcon
+                                type='delete'
+                                position={'absolute'}
+                                top={10}
+                                right={10}
+                                onClick={() => delImgFromGraphicL(image.id)}
+                            />
+                            <MyIcon
+                                type='preview'
+                                position={'absolute'}
+                                right={55}
+                                top={10}
+                                onClick={() => loadingPreview(image.path)}
+                            />
+                            {/* <img
                             src={image.url}
                             alt="Imagem do Card"
                             style={styles.cardImage}
                         /> */}
-                        <div style={styles.cardContent}>
-                            <h2 style={styles.cardTitle}>{`${image.name}`}</h2>
-                            <p style={styles.cardDescription}>{`Arquivo ${image.path}`}</p>
-                            <p style={styles.cardAdditionalInfo}>{`Criado por ${image.owner}`}</p>
-                        </div>
-                    </div>
-                ))}
+                            <div style={styles.cardContent}>
+                                <h2 style={styles.cardTitle}>{`${image.name}`}</h2>
+                                <p style={styles.cardDescription}>{`Arquivo ${image.path}`}</p>
+                                <p style={styles.cardAdditionalInfo}>{`Criado por ${image.owner}`}</p>
+                            </div>
+                        </motion.div>
+                    ))}
+                </AnimatePresence>
             </div>
         </div>
     )

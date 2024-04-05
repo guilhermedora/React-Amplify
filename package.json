@@ -13,6 +13,7 @@
     "@testing-library/user-event": "^13.5.0",
     "animejs": "^3.2.2",
     "aws-amplify": "^6.0.23",
+    "framer-motion": "^11.0.25",
     "georaster": "^1.6.0",
     "georaster-layer-for-leaflet": "^3.10.0",
     "leaflet": "^1.9.4",

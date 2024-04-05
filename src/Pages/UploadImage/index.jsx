@@ -8,7 +8,7 @@ import {
 } from '../../ui-components';
 import { Amplify } from 'aws-amplify';
 import { getCurrentUser } from 'aws-amplify/auth';
-
+import { motion } from 'framer-motion';
 import { uploadData } from 'aws-amplify/storage';
 import amplifyconfig from '../../amplifyconfiguration.json';
 import { generateClient } from "aws-amplify/api";
@@ -99,8 +99,23 @@ export default function UploadImage() {
                 height: '100%',
             }}
         >
-            <div
+            <motion.div
+                style={styles.box}
                 {...getRootProps()}
+                initial={{
+                    opacity: 0,
+                    y: '100%',
+                    scale: 1
+                }}
+                animate={{
+                    opacity: 2,
+                    y: '0',
+                    scale: [1, 1.3, 1],
+                }}
+                transition={{
+                    duration: 2,
+                    ease: "easeInOut"
+                }}
             >
                 <UploadCard
                     overrides={{
@@ -111,9 +126,8 @@ export default function UploadImage() {
                         //     ...getInputProps()
                         // }
                     }}
-                >
-                </UploadCard>
-            </div>
+                />
+            </motion.div>
             {fileTest
                 ? <>
                     <p style={{ fontSize: '20px' }}>{`Arquivo ${fileTest.name} pronto para upload.`}</p>
@@ -133,4 +147,23 @@ export default function UploadImage() {
             }
         </div>
     )
+}
+
+const styles = {
+    div1: {
+        width: '100px',
+        height: '100px',
+        background: 'blue'
+    },
+    box: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '200px',
+        height: '200px',
+        borderRadius: '30%',
+        background: 'var(--accent)',
+        textAlign: 'center',
+        color: 'white'
+    }
 }
